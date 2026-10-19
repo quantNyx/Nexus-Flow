@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexusFlow — Modern Productivity & Focus Studio</title>
+  <meta name="description" content="NexusFlow is a high-performance productivity suite featuring an interactive Kanban board, smart habit streak tracker, ambient Pomodoro focus timer, and real-time velocity analytics.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow glow-2" aria-hidden="true"></div>
+
+  <div id="app-container" class="app-container">
+    <!-- Top Global Header -->
+    <header class="app-header" id="main-header">
+      <div class="header-brand">
+        <div class="brand-logo" id="brand-logo">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">NexusFlow</h1>
+          <span class="brand-subtitle">Focus & Workflow Engine</span>
+        </div>
+      </div>
+
+      <!-- Global Search & Filters -->
+      <div class="header-search">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="global-search-input" placeholder="Search tasks, habits, tags... (Press /)" autocomplete="off">
+        <kbd class="search-shortcut">/</kbd>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <div class="live-clock-widget" id="live-clock-widget" title="Current Time">
+          <span id="live-date">Today</span>
+          <span id="live-time" class="time-accent">00:00:00</span>
+        </div>
+
+        <button class="btn-icon" id="btn-toggle-sound" title="Toggle UI Sound Effects" aria-label="Toggle Sound">
+          <svg class="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+        </button>
+
+        <button class="btn-icon" id="btn-toggle-theme" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <button class="btn-primary" id="btn-header-add-task">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>New Task</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace Layout -->
+    <div class="app-body">
+      <!-- Navigation Sidebar -->
+      <nav class="app-sidebar" id="app-navigation" aria-label="Main Navigation">
+        <div class="nav-group">
+          <span class="nav-label">MODULES</span>
+          <button class="nav-item active" id="nav-btn-board" data-view="board">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="9"></rect>
+              <rect x="14" y="3" width="7" height="5"></rect>
+              <rect x="14" y="12" width="7" height="9"></rect>
+              <rect x="3" y="16" width="7" height="5"></rect>
+            </svg>
+            <span>Kanban Board</span>
+            <span class="nav-badge" id="badge-total-tasks">0</span>
+          </button>
+
+          <button class="nav-item" id="nav-btn-habits" data-view="habits">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+            </svg>
+            <span>Habit Matrix</span>
+            <span class="nav-badge" id="badge-active-habits">0</span>
+          </button>
+
+          <button class="nav-item" id="nav-btn-focus" data-view="focus">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>Focus & Pomodoro</span>
+            <span class="pulse-dot" id="focus-active-indicator" style="display:none;"></span>
+          </button>
+
+          <button class="nav-item" id="nav-btn-analytics" data-view="analytics">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+            <span>Velocity Analytics</span>
+          </button>
+        </div>
+
+        <div class="nav-group">
+          <span class="nav-label">SYSTEM</span>
+          <button class="nav-item" id="nav-btn-settings" data-view="settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            <span>Data & Git Hub</span>
+          </button>
+        </div>
+
+        <!-- Sidebar Mini Widget: Focus Streak -->
+        <div class="sidebar-streak-card" id="sidebar-streak-widget">
+          <div class="streak-header">
+            <span class="streak-icon">🔥</span>
+            <div>
+              <span class="streak-label">Daily Momentum</span>
+              <strong class="streak-val" id="sidebar-streak-count">0 Days</strong>
+            </div>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="sidebar-day-progress" style="width: 65%;"></div>
+          </div>
+          <span class="streak-caption" id="sidebar-streak-caption">Keep crushing your daily sprint</span>
+        </div>
+      </nav>
+
+      <!-- Main Dynamic Content Views Area -->
+      <main class="app-main-content" id="main-content-area">
+
+        <!-- ============================================ -->
+        <!-- VIEW 1: KANBAN BOARD                         -->
+        <!-- ============================================ -->
+        <section class="content-view active" id="view-board">
+          <!-- Board Action Toolbar -->
+          <div class="view-toolbar">
+            <div class="toolbar-left">
+              <h2 class="view-heading">Task Board</h2>
+              <div class="filter-group">
+                <span class="filter-label">Priority:</span>
+                <button class="filter-chip active" data-filter-priority="all" id="filter-pri-all">All</button>
+                <button class="filter-chip" data-filter-priority="urgent" id="filter-pri-urgent">Urgent</button>
+                <button class="filter-chip" data-filter-priority="high" id="filter-pri-high">High</button>
+                <button class="filter-chip" data-filter-priority="medium" id="filter-pri-medium">Medium</button>
+                <button class="filter-chip" data-filter-priority="low" id="filter-pri-low">Low</button>
+              </div>
+            </div>
+
+            <div class="toolbar-right">
+              <div class="tag-filter-wrapper">
+                <select id="select-filter-tag" class="select-styled" title="Filter by Tag">
+                  <option value="all">All Tags</option>
+                </select>
+              </div>
+              <button class="btn-secondary" id="btn-quick-add-task">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>Add Task</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Board Grid Columns -->
+          <div class="kanban-grid" id="kanban-board-container">
+            <!-- Column 1: Backlog -->
+            <div class="kanban-column" id="col-backlog" data-status="backlog">
+              <div class="column-header">
+                <div class="col-title-wrap">
+                  <span class="status-indicator status-backlog"></span>
+                  <h3 class="col-title">Backlog</h3>
+                  <span class="col-count" id="count-backlog">0</span>
+                </div>
+                <button class="btn-col-add" data-add-status="backlog" title="Add task to Backlog" id="btn-add-backlog">+</button>
+              </div>
+              <div class="column-drop-zone" id="drop-zone-backlog" data-status="backlog">
+                <!-- Task Cards will be rendered here dynamically -->
+              </div>
+            </div>
+
+            <!-- Column 2: In Progress -->
+            <div class="kanban-column" id="col-in-progress" data-status="in-progress">
+              <div class="column-header">
+                <div class="col-title-wrap">
+                  <span class="status-indicator status-progress"></span>
+                  <h3 class="col-title">In Progress</h3>
+                  <span class="col-count" id="count-in-progress">0</span>
+                </div>
+                <button class="btn-col-add" data-add-status="in-progress" title="Add task to In Progress" id="btn-add-in-progress">+</button>
+              </div>
+              <div class="column-drop-zone" id="drop-zone-in-progress" data-status="in-progress">
+                <!-- Task Cards will be rendered here dynamically -->
+              </div>
+            </div>
+
+            <!-- Column 3: Review -->
+            <div class="kanban-column" id="col-review" data-status="review">
+              <div class="column-header">
+                <div class="col-title-wrap">
+                  <span class="status-indicator status-review"></span>
+                  <h3 class="col-title">In Review</h3>
+                  <span class="col-count" id="count-review">0</span>
+                </div>
+                <button class="btn-col-add" data-add-status="review" title="Add task to Review" id="btn-add-review">+</button>
+              </div>
+              <div class="column-drop-zone" id="drop-zone-review" data-status="review">
+                <!-- Task Cards will be rendered here dynamically -->
+              </div>
+            </div>
+
+            <!-- Column 4: Completed -->
+            <div class="kanban-column" id="col-done" data-status="done">
+              <div class="column-header">
+                <div class="col-title-wrap">
+                  <span class="status-indicator status-done"></span>
+                  <h3 class="col-title">Completed</h3>
+                  <span class="col-count" id="count-done">0</span>
+                </div>
+                <button class="btn-col-add" data-add-status="done" title="Add task to Completed" id="btn-add-done">+</button>
+              </div>
+              <div class="column-drop-zone" id="drop-zone-done" data-status="done">
+                <!-- Task Cards will be rendered here dynamically -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- VIEW 2: HABIT MATRIX & STREAKS               -->
+        <!-- ============================================ -->
+        <section class="content-view" id="view-habits">
+          <div class="view-toolbar">
+            <div class="toolbar-left">
+              <h2 class="view-heading">Habit Discipline Matrix</h2>
+              <p class="view-subheading">Track repetitive micro-routines, build momentum, and protect your streaks.</p>
+            </div>
+            <div class="toolbar-right">
+              <button class="btn-primary" id="btn-add-habit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>New Routine</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Habit Stats Summary Grid -->
+          <div class="stats-overview-grid">
+            <div class="stat-card">
+              <span class="stat-icon">🎯</span>
+              <div class="stat-data">
+                <span class="stat-label">Active Habits</span>
+                <strong class="stat-value" id="stat-habits-active">0</strong>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon">⚡</span>
+              <div class="stat-data">
+                <span class="stat-label">Longest Streak</span>
+                <strong class="stat-value" id="stat-habits-best-streak">0 Days</strong>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon">✅</span>
+              <div class="stat-data">
+                <span class="stat-label">Today's Completion</span>
+                <strong class="stat-value" id="stat-habits-today-rate">0%</strong>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon">📈</span>
+              <div class="stat-data">
+                <span class="stat-label">7-Day Consistency</span>
+                <strong class="stat-value" id="stat-habits-weekly-rate">0%</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Habit Table Container -->
+          <div class="glass-panel habit-matrix-wrapper">
+            <div class="habit-table-header">
+              <div class="col-habit-name">Habit & Routine</div>
+              <div class="col-habit-category">Category</div>
+              <div class="col-habit-days" id="habit-days-header">
+                <!-- Day columns (Mon, Tue, Wed...) rendered by JS -->
+              </div>
+              <div class="col-habit-streak">Streak</div>
+              <div class="col-habit-actions">Action</div>
+            </div>
+            <div class="habit-table-body" id="habit-table-container">
+              <!-- Habit rows rendered dynamically -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- VIEW 3: FOCUS & POMODORO STUDIO              -->
+        <!-- ============================================ -->
+        <section class="content-view" id="view-focus">
+          <div class="focus-studio-container">
+            <div class="focus-timer-card glass-panel">
+              <!-- Timer Mode Tabs -->
+              <div class="timer-mode-selector">
+                <button class="mode-tab active" data-mode="pomodoro" id="mode-pomodoro">Deep Work (25m)</button>
+                <button class="mode-tab" data-mode="shortBreak" id="mode-short-break">Short Rest (5m)</button>
+                <button class="mode-tab" data-mode="longBreak" id="mode-long-break">Recharge (15m)</button>
+              </div>
+
+              <!-- Circular Progress Gauge -->
+              <div class="circular-timer-wrapper">
+                <svg class="timer-svg" viewBox="0 0 300 300">
+                  <defs>
+                    <linearGradient id="timer-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="var(--accent-purple)" />
+                      <stop offset="100%" stop-color="var(--accent-cyan)" />
+                    </linearGradient>
+                  </defs>
+                  <circle class="timer-circle-bg" cx="150" cy="150" r="130"></circle>
+                  <circle class="timer-circle-progress" id="timer-circle-progress" cx="150" cy="150" r="130"></circle>
+                </svg>
+
+                <div class="timer-center-content">
+                  <div class="timer-status-pill" id="timer-status-label">READY TO FOCUS</div>
+                  <div class="timer-digits" id="timer-digits">25:00</div>
+                  <div class="timer-task-binding" id="timer-task-linked">
+                    <span class="linked-icon">📌</span>
+                    <span id="timer-active-task-title">Select a task to link</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Timer Controls -->
+              <div class="timer-controls">
+                <button class="btn-timer-main" id="btn-timer-toggle" title="Start/Pause (Spacebar)">
+                  <svg id="icon-timer-play" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  <svg id="icon-timer-pause" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
+                    <rect x="6" y="4" width="4" height="16"></rect>
+                    <rect x="14" y="4" width="4" height="16"></rect>
+                  </svg>
+                  <span id="btn-timer-text">Begin Sprint</span>
+                </button>
+
+                <button class="btn-timer-secondary" id="btn-timer-skip" title="Skip Session">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                    <line x1="19" y1="5" x2="19" y2="19"></line>
+                  </svg>
+                </button>
+
+                <button class="btn-timer-secondary" id="btn-timer-reset" title="Reset Session">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 4v6h6"></path>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Ambient Soundscape Generator -->
+              <div class="ambient-sound-toolbar">
+                <div class="sound-toolbar-label">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18V5l12-2v13"></path>
+                    <circle cx="6" cy="18" r="3"></circle>
+                    <circle cx="18" cy="16" r="3"></circle>
+                  </svg>
+                  <span>Ambient Audio Synthesizer:</span>
+                </div>
+                <div class="sound-chip-group">
+                  <button class="sound-chip active" data-sound="none" id="sound-btn-none">Off</button>
+                  <button class="sound-chip" data-sound="rain" id="sound-btn-rain">🌧️ Rain</button>
+                  <button class="sound-chip" data-sound="binaural" id="sound-btn-binaural">🧠 Gamma 40Hz</button>
+                  <button class="sound-chip" data-sound="brown" id="sound-btn-brown">🌊 Brown Noise</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Focus Stats and History -->
+            <div class="focus-side-panel">
+              <div class="glass-panel focus-metrics-card">
+                <h3 class="panel-title">Session Telemetry</h3>
+                <div class="metric-row">
+                  <span>Sessions Today</span>
+                  <strong id="focus-sessions-today">0</strong>
+                </div>
+                <div class="metric-row">
+                  <span>Focus Time Today</span>
+                  <strong id="focus-minutes-today">0 mins</strong>
+                </div>
+                <div class="metric-row">
+                  <span>Current Streak</span>
+                  <strong id="focus-sprint-streak">0 Sessions</strong>
+                </div>
+              </div>
+
+              <div class="glass-panel focus-task-selector-card">
+                <h3 class="panel-title">Link to Kanban Task</h3>
+                <p class="panel-subtitle">Select an in-progress card to focus on during this sprint:</p>
+                <select id="select-focus-task" class="select-styled" title="Select Kanban Task">
+                  <option value="">-- No Task Linked --</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- VIEW 4: VELOCITY & PRODUCTIVITY ANALYTICS    -->
+        <!-- ============================================ -->
+        <section class="content-view" id="view-analytics">
+          <div class="view-toolbar">
+            <div class="toolbar-left">
+              <h2 class="view-heading">Performance Velocity</h2>
+              <p class="view-subheading">Aggregated insights across your tasks, habits, and focus sprints.</p>
+            </div>
+          </div>
+
+          <div class="analytics-dashboard-grid">
+            <div class="stat-card">
+              <span class="stat-icon">📊</span>
+              <div class="stat-data">
+                <span class="stat-label">Total Work Items</span>
+                <strong class="stat-value" id="an-total-tasks">0</strong>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon">🏁</span>
+              <div class="stat-data">
+                <span class="stat-label">Completion Velocity</span>
+                <strong class="stat-value" id="an-completion-rate">0%</strong>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon">⌛</span>
+              <div class="stat-data">
+                <span class="stat-label">Total Focus Logged</span>
+                <strong class="stat-value" id="an-focus-time">0h 0m</strong>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon">🔥</span>
+              <div class="stat-data">
+                <span class="stat-label">Habit Consistency</span>
+                <strong class="stat-value" id="an-habit-rate">0%</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="analytics-charts-grid">
+            <!-- Task Distribution Chart -->
+            <div class="glass-panel chart-card">
+              <h3 class="chart-title">Workflow Distribution</h3>
+              <div class="bar-distribution-container" id="chart-workflow-bars">
+                <!-- Visual progress breakdown -->
+              </div>
+            </div>
+
+            <!-- Priority Distribution -->
+            <div class="glass-panel chart-card">
+              <h3 class="chart-title">Priority Breakdown</h3>
+              <div class="priority-breakdown-list" id="chart-priority-list">
+                <!-- Visual Priority items -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- VIEW 5: DATA, BACKUP & GIT SETTINGS          -->
+        <!-- ============================================ -->
+        <section class="content-view" id="view-settings">
+          <div class="view-toolbar">
+            <div class="toolbar-left">
+              <h2 class="view-heading">Data & Git Central Hub</h2>
+              <p class="view-subheading">Manage local persistence, export/import backups, and view Git repository status.</p>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+            <!-- Git Hub Integration Card -->
+            <div class="glass-panel setting-card">
+              <div class="setting-card-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="setting-icon">
+                  <circle cx="18" cy="18" r="3"></circle>
+                  <circle cx="6" cy="6" r="3"></circle>
+                  <path d="M13 6h3a2 2 0 0 1 2 2v7"></path>
+                  <line x1="6" y1="9" x2="6" y2="21"></line>
+                </svg>
+                <div>
+                  <h3 class="setting-title">Git Repository Connection</h3>
+                  <p class="setting-desc">Local Git initialized on branch <code>main</code> with Windows Credential Manager.</p>
+                </div>
+              </div>
+              <div class="git-status-box">
+                <div class="git-row">
+                  <span>Branch:</span>
+                  <span class="badge-accent">main</span>
+                </div>
+                <div class="git-row">
+                  <span>Author:</span>
+                  <span id="git-info-author">Configured locally</span>
+                </div>
+                <div class="git-row">
+                  <span>Push Command:</span>
+                  <code class="code-pill">git remote add origin &lt;url&gt; && git push -u origin main</code>
+                </div>
+              </div>
+            </div>
+
+            <!-- Data Backup & Portability -->
+            <div class="glass-panel setting-card">
+              <div class="setting-card-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="setting-icon">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <div>
+                  <h3 class="setting-title">Backup & Portability</h3>
+                  <p class="setting-desc">Export your entire state (tasks, habits, focus logs) as JSON or restore from file.</p>
+                </div>
+              </div>
+              <div class="setting-actions-row">
+                <button class="btn-primary" id="btn-export-backup">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  <span>Export JSON Backup</span>
+                </button>
+
+                <label class="btn-secondary" id="label-import-backup" for="file-import-input">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                  </svg>
+                  <span>Import JSON Backup</span>
+                </label>
+                <input type="file" id="file-import-input" accept=".json" style="display:none;">
+
+                <button class="btn-secondary" id="btn-load-demo-data">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                    <polyline points="16 6 12 2 8 6"></polyline>
+                    <line x1="12" y1="2" x2="12" y2="15"></line>
+                  </svg>
+                  <span>Load Sample Demo Data</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="glass-panel setting-card danger-zone">
+              <div class="setting-card-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="setting-icon text-danger">
+                  <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <div>
+                  <h3 class="setting-title">Reset Local Data</h3>
+                  <p class="setting-desc">Clear all tasks, habits, and focus metrics from your browser cache.</p>
+                </div>
+              </div>
+              <button class="btn-danger" id="btn-clear-all-data">Clear All Local Data</button>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- MODAL: TASK CREATION / EDIT                  -->
+  <!-- ============================================ -->
+  <div class="modal-backdrop" id="task-modal" aria-hidden="true">
+    <div class="modal-dialog glass-panel" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
+      <div class="modal-header">
+        <h3 id="task-modal-title" class="modal-title">Create New Task</h3>
+        <button class="btn-close-modal" id="btn-close-task-modal" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <form id="task-form" class="modal-form">
+        <input type="hidden" id="task-input-id">
+
+        <div class="form-group">
+          <label for="task-input-title" class="form-label">Task Title <span class="required">*</span></label>
+          <input type="text" id="task-input-title" class="form-input" placeholder="e.g. Architect Core Audio Engine" required autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="task-input-desc" class="form-label">Description</label>
+          <textarea id="task-input-desc" class="form-input form-textarea" rows="3" placeholder="Context, requirements, and acceptance criteria..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-half">
+            <label for="task-input-status" class="form-label">Initial Status</label>
+            <select id="task-input-status" class="form-input form-select">
+              <option value="backlog">Backlog</option>
+              <option value="in-progress">In Progress</option>
+              <option value="review">In Review</option>
+              <option value="done">Completed</option>
+            </select>
+          </div>
+
+          <div class="form-group col-half">
+            <label for="task-input-priority" class="form-label">Priority</label>
+            <select id="task-input-priority" class="form-input form-select">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-half">
+            <label for="task-input-due" class="form-label">Due Date</label>
+            <input type="date" id="task-input-due" class="form-input">
+          </div>
+
+          <div class="form-group col-half">
+            <label for="task-input-tags" class="form-label">Tags (comma-separated)</label>
+            <input type="text" id="task-input-tags" class="form-input" placeholder="Frontend, UI, Audio">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="btn-cancel-task">Cancel</button>
+          <button type="submit" class="btn-primary" id="btn-save-task">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- MODAL: HABIT CREATION                        -->
+  <!-- ============================================ -->
+  <div class="modal-backdrop" id="habit-modal" aria-hidden="true">
+    <div class="modal-dialog glass-panel" role="dialog" aria-modal="true" aria-labelledby="habit-modal-title">
+      <div class="modal-header">
+        <h3 id="habit-modal-title" class="modal-title">Create Daily Habit Routine</h3>
+        <button class="btn-close-modal" id="btn-close-habit-modal" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <form id="habit-form" class="modal-form">
+        <div class="form-group">
+          <label for="habit-input-title" class="form-label">Habit Name <span class="required">*</span></label>
+          <input type="text" id="habit-input-title" class="form-input" placeholder="e.g. Read 20 pages / 45m Deep Code" required autocomplete="off">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-half">
+            <label for="habit-input-category" class="form-label">Category</label>
+            <select id="habit-input-category" class="form-input form-select">
+              <option value="Engineering">💻 Engineering</option>
+              <option value="Mind & Learning">🧠 Mind & Learning</option>
+              <option value="Fitness & Health">🏃 Fitness & Health</option>
+              <option value="Focus & Flow">⚡ Focus & Flow</option>
+              <option value="General">⭐ General</option>
+            </select>
+          </div>
+
+          <div class="form-group col-half">
+            <label for="habit-input-icon" class="form-label">Icon Emoji</label>
+            <input type="text" id="habit-input-icon" class="form-input" value="🔥" maxlength="4">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="btn-cancel-habit">Cancel</button>
+          <button type="submit" class="btn-primary" id="btn-save-habit">Create Routine</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

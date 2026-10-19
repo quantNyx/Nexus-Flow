@@ -2,6 +2,8 @@
 
 NexusFlow is a high-performance, aesthetically refined productivity workspace combining an interactive drag-and-drop **Kanban Board**, a **Habit Discipline Matrix**, an ambient **Pomodoro Focus Studio** (with synthesized binaural/ambient audio), and real-time **Velocity Analytics**.
 
+![NexusFlow Studio Preview](assets/nexusflow-preview.jpg)
+
 ---
 
 ## 🌟 Key Features
@@ -31,6 +33,54 @@ NexusFlow is a high-performance, aesthetically refined productivity workspace co
    - Instant automatic synchronization with browser `localStorage`.
    - Full JSON Export and Import backup functionality.
    - Dark Mode / Light Mode with ambient glowing orbs.
+
+---
+
+## 🏛️ System Architecture
+
+NexusFlow is engineered with a modular, zero-dependency architecture decoupling presentation, core state management, hardware-accelerated Web Audio synthesis, and browser persistence:
+
+```mermaid
+graph TD
+    subgraph Presentation["Presentation Layer (HTML5 & CSS3)"]
+        Header["Global Header & Controls (Search, Theme, Audio, Clock)"]
+        Nav["Navigation Sidebar (Board, Habits, Focus, Analytics)"]
+        
+        subgraph Views["Interactive Workspace Views"]
+            V1["Kanban Board (HTML5 Drag & Drop, 4 Workflow Lanes)"]
+            V2["Habit Matrix (7-Day Rolling Heatmap & Streak Engine)"]
+            V3["Focus Studio (SVG Progress Gauge & Cycle Manager)"]
+            V4["Velocity Analytics (Completion Rates & Priority Distribution)"]
+        end
+        
+        Modals["Modals & Toast System (Task Dialogs & Notifications)"]
+    end
+
+    subgraph Core["Application Logic Engine (ES6+ Vanilla JS)"]
+        Store["Central State Store (Tasks, Habits, Timer, Settings)"]
+        AudioEng["Web Audio API Synthesizer (Binaural Beats, Noise, Rain)"]
+        KeyRouter["Keyboard Shortcuts Router (Global Key Bindings)"]
+        Portability["Data Portability Service (JSON Export & Import)"]
+    end
+
+    subgraph Storage["Persistence Layer"]
+        LS["Browser LocalStorage (JSON Auto-Sync)"]
+        Disk["Local JSON File Export (nexusflow-backup.json)"]
+    end
+
+    %% Interactions
+    Header --> Nav
+    Nav --> Views
+    Modals --> Store
+    Views --> Store
+    KeyRouter --> Modals
+    KeyRouter --> Nav
+    KeyRouter --> V3
+    Store --> AudioEng
+    Store <--> LS
+    Portability <--> Store
+    Portability <--> Disk
+```
 
 ---
 
@@ -92,3 +142,4 @@ When you are ready to push it to your GitHub account:
 - **Styling**: Vanilla CSS Design System with custom HSL tokens, glassmorphism, and responsive CSS Grid/Flexbox layouts.
 - **Logic**: Vanilla ES6+ JavaScript with decoupled state store and Web Audio API synthesis.
 - **Persistence**: Browser `localStorage` with JSON serialization.
+

@@ -1,44 +1,67 @@
-# NexusFlow — Modern Productivity & Focus Studio
+<div align="center">
 
-NexusFlow is a high-performance, aesthetically refined productivity workspace combining an interactive drag-and-drop **Kanban Board**, a **Habit Discipline Matrix**, an ambient **Pomodoro Focus Studio** (with synthesized binaural/ambient audio), and real-time **Velocity Analytics**.
+# ⚡ NexusFlow
+
+### Modern Productivity Workspace & Ambient Focus Studio
+
+A lightweight, zero-dependency, privacy-first productivity suite engineered for developers and creators. NexusFlow combines an interactive Kanban workflow, daily habit discipline matrix, ambient Pomodoro timer with native Web Audio synthesis, and velocity analytics — all running 100% locally in your browser.
+
+[![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-success.svg?style=flat-square)](https://github.com)
+[![Offline First](https://img.shields.io/badge/Storage-100%25_Offline_Local-blue.svg?style=flat-square)](https://github.com)
+[![Vanilla Web Stack](https://img.shields.io/badge/Stack-HTML5%20%7C%20CSS3%20%7C%20ES6+-orange.svg?style=flat-square)](https://github.com)
+[![Web Audio API](https://img.shields.io/badge/Audio-Hardware_Synthesized-purple.svg?style=flat-square)](https://github.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg?style=flat-square)](LICENSE)
+
+<br/>
 
 ![NexusFlow Studio Preview](assets/nexusflow-preview.jpg)
 
+</div>
+
 ---
 
-## 🌟 Key Features
+## 💡 Why NexusFlow?
 
-1. **Interactive Kanban Board**:
-   - 4-lane workflow: *Backlog*, *In Progress*, *In Review*, and *Completed*.
-   - Native HTML5 Drag-and-Drop with visual drop-zone feedback.
-   - Quick-move dropdown selector for mobile and keyboard accessibility.
-   - Priority filters (*Urgent*, *High*, *Medium*, *Low*), tag filters, and global instant search.
+Most modern task trackers are bloated with slow electron wrappers, cloud logins, paywalled features, and background tracking. **NexusFlow** was built with a different philosophy:
 
-2. **Habit Discipline Matrix**:
-   - 7-day rolling matrix with individual streak counters.
-   - Categorized routines (Engineering, Mind & Learning, Fitness & Health, Focus & Flow).
-   - Real-time habit adherence metrics and weekly consistency score.
+- **Instant Zero-Build Execution**: Pure HTML5, modern CSS3, and ES6+ JavaScript. No `npm install`, no bundlers, no build step.
+- **100% Privacy & Offline-First**: All your tasks, habits, and sessions are saved locally via browser `localStorage`. Your data never touches a third-party server.
+- **Hardware-Synthesized Audio**: Built-in sound generator using the browser's native **Web Audio API** (40Hz Gamma Binaural Beats, Brown Noise, Rain) without streaming large audio files.
+- **Keyboard-First Workflow**: Seamlessly jump between tasks, boards, and focus sprints with fluid keyboard shortcuts.
 
-3. **Focus & Pomodoro Studio**:
-   - 25m Deep Work, 5m Short Break, and 15m Recharge modes.
-   - Circular SVG progress ring gauge with smooth real-time animation.
-   - Native Web Audio API ambient sound generator (Rain, 40Hz Gamma Binaural Beats, Brown Noise) — zero external audio dependencies.
-   - Link active Kanban tasks directly to your sprint sessions.
+---
 
-4. **Performance Velocity Analytics**:
-   - Work breakdown charts and task priority meters.
-   - Total focus time logged and sprint telemetry.
+## 🌟 Core Modules
 
-5. **Local Persistence & Data Portability**:
-   - Instant automatic synchronization with browser `localStorage`.
-   - Full JSON Export and Import backup functionality.
-   - Dark Mode / Light Mode with ambient glowing orbs.
+### 📋 1. Interactive Kanban Board
+- **4-Lane Workflow**: Organize your work across *Backlog*, *In Progress*, *In Review*, and *Completed*.
+- **Drag-and-Drop & Mobile Selectors**: Native HTML5 drag-and-drop with responsive quick-move dropdowns for mobile and keyboard users.
+- **Priority & Tag Filtering**: Instantly isolate tasks by priority (*Urgent*, *High*, *Medium*, *Low*), categories, or keyword search.
+- **Global Quick Search**: Press <kbd>/</kbd> anywhere to search tasks, tags, and habit titles in real-time.
+
+### ⚡ 2. Habit Discipline Matrix
+- **7-Day Rolling Heatmap**: Visually monitor daily consistency with an intuitive rolling 7-day adherence matrix.
+- **Categorized Routines**: Pre-configured and customizable categories (Engineering, Mind & Learning, Fitness & Health, Focus & Flow).
+- **Streak & Adherence Telemetry**: Real-time weekly consistency percentages and current streak counters for each habit.
+
+### ⏱️ 3. Focus & Pomodoro Studio
+- **Configurable Sprint Modes**: 25m *Deep Work*, 5m *Short Break*, and 15m *Long Recharge*.
+- **Smooth SVG Progress Gauge**: Real-time circular progress animation with remaining time countdown.
+- **Synthesized Ambient Audio**: Zero external audio dependencies. Uses procedural oscillators and noise filters to generate:
+  - **40Hz Gamma Binaural Beats** (proven to aid deep focus and working memory)
+  - **Deep Brown Noise** (calming sound masking for busy environments)
+  - **Ambient Rain Soundscape**
+- **Active Task Linking**: Connect any Kanban task directly to your current focus sprint.
+
+### 📊 4. Velocity Analytics
+- **Work Breakdown Metrics**: Real-time distribution charts by task status and urgency level.
+- **Sprint Telemetry**: Total focus hours logged, completed sprint sessions, and task completion velocity.
 
 ---
 
 ## 🏛️ System Architecture
 
-NexusFlow is engineered with a modular, zero-dependency architecture decoupling presentation, core state management, hardware-accelerated Web Audio synthesis, and browser persistence:
+NexusFlow follows a clean, decoupled architecture separating UI presentation, core state reactivity, Web Audio synthesis, and browser persistence:
 
 ```mermaid
 graph TD
@@ -86,60 +109,67 @@ graph TD
 
 ## 🚀 Quick Start
 
-NexusFlow requires no build step and runs instantly in any modern browser.
+NexusFlow requires no installation, dependencies, or compile step.
 
-### Option 1: Launch Local Development Server
-From the project folder:
-```powershell
+### Option 1: Development Server (Recommended)
+
+Run a local server with Python or Node.js:
+
+```bash
+# Using Python
 python -m http.server 3000
+
+# Or using Node.js / npx
+npx serve .
 ```
-Then open: [http://localhost:3000](http://localhost:3000)
 
-### Option 2: Direct File Launch
-Simply double-click `index.html` to open it directly in your web browser.
+Open **`http://localhost:3000`** in any modern web browser.
 
----
+### Option 2: Direct Launch
 
-## 🔗 How to Connect & Push to Your Remote GitHub Repository
-
-NexusFlow has already been initialized as a local Git repository on branch `main`.
-
-When you are ready to push it to your GitHub account:
-
-1. **Create an empty repository on GitHub**:
-   - Go to [github.com/new](https://github.com/new).
-   - Enter a repository name (e.g., `nexus-flow`).
-   - Do **not** initialize with README or .gitignore (we already have them).
-
-2. **Link the remote and push**:
-   Run the following commands in PowerShell from this directory:
-   ```powershell
-   git remote add origin https://github.com/<YOUR-USERNAME>/<YOUR-REPO-NAME>.git
-   git push -u origin main
-   ```
-   *Windows Git Credential Manager will automatically open a browser window for a one-click login if you aren't already authenticated.*
+Simply open **`index.html`** directly in your browser (Google Chrome, Firefox, Safari, Microsoft Edge, Brave).
 
 ---
 
 ## ⌨️ Keyboard Shortcuts
 
+Speed up your daily workflow with built-in hotkeys:
+
 | Shortcut | Action |
 | :--- | :--- |
-| <kbd>Ctrl</kbd> + <kbd>N</kbd> / <kbd>⌘</kbd> + <kbd>N</kbd> | Open New Task modal |
-| <kbd>/</kbd> | Focus global search bar |
-| <kbd>Space</kbd> | Start / Pause Pomodoro focus sprint |
-| <kbd>1</kbd> | Navigate to Kanban Board |
-| <kbd>2</kbd> | Navigate to Habit Matrix |
-| <kbd>3</kbd> | Navigate to Focus Studio |
-| <kbd>4</kbd> | Navigate to Velocity Analytics |
-| <kbd>Esc</kbd> | Close active modal |
+| <kbd>Ctrl</kbd> + <kbd>N</kbd> / <kbd>⌘</kbd> + <kbd>N</kbd> | Open **New Task** modal |
+| <kbd>/</kbd> | Focus **Global Search** input |
+| <kbd>Space</kbd> | Start / Pause **Pomodoro** timer |
+| <kbd>1</kbd> | Switch to **Kanban Board** |
+| <kbd>2</kbd> | Switch to **Habit Matrix** |
+| <kbd>3</kbd> | Switch to **Focus Studio** |
+| <kbd>4</kbd> | Switch to **Velocity Analytics** |
+| <kbd>Esc</kbd> | Dismiss active modal or clear search |
 
 ---
 
-## 🏗️ Architecture & Tech Stack
+## 💾 Data Portability & Privacy
 
-- **Structure**: Semantic HTML5 with accessibility attributes and ARIA dialogs.
-- **Styling**: Vanilla CSS Design System with custom HSL tokens, glassmorphism, and responsive CSS Grid/Flexbox layouts.
-- **Logic**: Vanilla ES6+ JavaScript with decoupled state store and Web Audio API synthesis.
-- **Persistence**: Browser `localStorage` with JSON serialization.
+- **Automatic Local Storage**: Every update (moving a card, checking off a habit, completing a sprint) is instantly saved to your browser's `localStorage`.
+- **JSON Backup & Restore**: Full data export and import tools allow you to backup your workspace or migrate between devices in seconds.
+- **No Cloud Required**: 100% of the code executes on your device.
+
+---
+
+## 🛠️ Tech Stack
+
+| Component | Technology | Description |
+| :--- | :--- | :--- |
+| **Markup** | HTML5 | Accessible, semantic elements with ARIA dialog roles |
+| **Styling** | Vanilla CSS3 | Custom HSL design tokens, glassmorphism, responsive Grid & Flexbox |
+| **Logic** | Vanilla ES6+ | Modular state store, reactive event dispatcher, zero frameworks |
+| **Sound** | Web Audio API | Low-latency oscillator nodes, biquad filters, and procedural noise |
+| **Storage** | Web Storage API | Client-side persistent key-value cache |
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE) — free for personal and commercial use.
+
 
